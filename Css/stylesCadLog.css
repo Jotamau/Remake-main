@@ -117,12 +117,8 @@ form > input::placeholder {
     
 }
 
-.card-login > span {
-    margin-top: 1vh;
-}
-
 .card-login > span > a {
-    font-size: 0.9vw;
+    font-size: 0.7vw;
     text-decoration: none;
     text-transform: uppercase;
     color: #ffffff;
@@ -139,10 +135,6 @@ form > input::placeholder {
     .card-login {
         width: 85%;
         margin-right: 10vw;
-    }
-
-    .card-login > span > a {
-        font-size: 1.5vw;
     }
 }
 
@@ -163,16 +155,5 @@ form > input::placeholder {
     }
     .card-login > span > a {
         font-size: 1.5vw;
-    }
-
-    .card-login > span > a {
-        font-size: 1.9vw;
-    }
-}
-
-@media only screen and (max-width: 550px) {
-      
-    .card-login > span > a {
-        font-size: 3vw;
     }
 }

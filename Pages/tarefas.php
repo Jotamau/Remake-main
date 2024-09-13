@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Css/stylesHome.css">
+    <link rel="stylesheet" href="../Css/stylesTaskMng.css">
     
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -63,9 +64,6 @@
 
         <div id="dashboard" class="col main-content">
         <div class="container-right">
-                <h1>Tarefas</h1>
-
-
 
                 <div class="todo-container">
       <div id="todo-topo">
@@ -74,26 +72,33 @@
       <form id="todo-form">
         <p>Adicione sua tarefa</p>
         <div class="form-control">
+
+          <div class="form-control2">
           <input
             type="text"
             id="todo-input"
-            placeholder="O que você vai fazer?"
-          />
+            placeholder="O que você vai fazer?"/>
           <button type="submit">
             <i class="fa-thin fa-plus"></i>
           </button>
+          </div>
+
         </div>
       </form>
       <form id="edit-form" class="hide">
         <p>Edite sua tarefa</p>
         <div class="form-control">
+
+          <div class="form-control2">
           <input type="text" id="edit-input" />
           <button type="submit">
             <i class="fa-solid fa-check-double"></i>
           </button>
+          </div>
         </div>
         <button id="cancel-edit-btn">Cancelar</button>
       </form>
+
       <div id="toolbar">
         <div id="search">
           <h4>Pesquisar:</h4>
@@ -113,8 +118,9 @@
           </select>
         </div>
       </div>
+
       <div id="todo-list">
-                        
+          
          
 
       </div>
