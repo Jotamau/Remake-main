@@ -27,85 +27,12 @@ if (!$usuario) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Css/stylesHome.css">
+    <link rel="stylesheet" href="../Css/stylesProfile.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <title>Perfil do Usuário</title>
-    <style>
-        .profile-container {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        .profile-card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .profile-header img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #ddd;
-        }
-
-        .profile-header button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .profile-header button:hover {
-            background-color: #0056b3;
-        }
-
-        .profile-details p {
-            font-size: 16px;
-            color: #333;
-        }
-
-        .profile-details strong {
-            color: #007bff;
-        }
-
-        .btn-custom {
-            margin-top: 10px;
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .btn-custom:hover {
-            background-color: #0056b3;
-        }
-
-        .sidebar {
-            background-color: #343a40;
-            color: #fff;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-        }
-
-        .main-content {
-            margin-left: 250px;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="main-container">
@@ -144,11 +71,11 @@ if (!$usuario) {
                 <!-- Main right -->
                 <div id="dashboard" class="col main-content">
                     <div class="profile-container">
-                        <h1>Perfil</h1>
+        
                         <div class="profile-card">
                             <div class="profile-header">
                                 <img id="profile-image" src="<?php echo $usuario['imagem_perfil'] ?: '../Assets/default-avatar.png'; ?>" alt="Imagem de Perfil">
-                                <div>
+                                <div class="btn-pro">
                                     <button id="edit-image-btn" class="btn-custom">Alterar Imagem</button>
                                     <input type="file" id="image-upload" style="display: none;">
                                     <h2 id="profile-name"><?php echo htmlspecialchars($usuario['nome']); ?></h2>
