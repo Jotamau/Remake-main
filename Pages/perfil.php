@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
 $userId = $_SESSION['usuario_id'];
 
 // Consulta ao banco de dados para obter as informações do perfil
-$stmt = $pdo->prepare("SELECT nome, email, imagem_perfil FROM usuarios WHERE id = :id");
+$stmt = $pdo->prepare("SELECT nome, email, imagem_perfil, idade, sexo FROM usuarios WHERE id = :id");
 $stmt->execute(['id' => $userId]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -21,7 +21,6 @@ if (!$usuario) {
 
 // Determina o caminho da imagem de perfil
 $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_perfil']) : '../Assets/default-avatar.png';
-
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +61,7 @@ $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_pe
                             </a>
                         </li>
                         <li class="nav-item d-flex justify-content-center d-sm-block">
-                            <a href="#" class="nav-link text-white d-flex align-items-center">
+                            <a href="perfil.php" class="nav-link text-white d-flex align-items-center">
                                 <img class="link-icon" src="../Assets/profile.svg" alt="">
                                 <span class="d-none d-sm-inline">Perfil</span>
                             </a>
@@ -76,14 +75,18 @@ $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_pe
                             <div class="profile-header">
                                 <img id="profile-image" src="<?php echo $imagemPerfil; ?>" alt="Imagem de Perfil">
                                 <div class="btn-pro">
-                                    <button id="edit-image-btn" class="btn-custom">Alterar Imagem</button>
+                                    <button id="edit-image-btn" class="btn-custom">Alterar/adicionar Imagem</button>
                                     <input type="file" id="image-upload" style="display: none;">
-                                    <button id="edit-name-btn" class="btn-custom">Alterar Nome</button>
+                                    <button id="edit-name-btn" class="btn-custom">Alterar/adicionar Nome</button>
+                                    <button id="edit-age-btn" class="btn-custom">Alterar/adicionar Idade</button>
+                                    <button id="edit-gender-btn" class="btn-custom">Alterar/adicionar Sexo</button>
                                 </div>
                             </div>
                             <div class="profile-details">
                                 <p><strong>Email:</strong> <span id="profile-email"><?php echo htmlspecialchars($usuario['email']); ?></span></p>
                                 <p><strong>Nome:</strong> <span id="profile-name"><?php echo htmlspecialchars($usuario['nome']); ?></span></p>
+                                <p><strong>Idade:</strong> <span id="profile-age"><?php echo htmlspecialchars($usuario['idade']); ?></span></p>
+                                <p><strong>Sexo:</strong> <span id="profile-gender"><?php echo htmlspecialchars($usuario['sexo']); ?></span></p>
                             </div>
                         </div>
                     </div>
@@ -117,12 +120,30 @@ $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_pe
             });
 
             const editNameBtn = document.getElementById('edit-name-btn');
+            const editAgeBtn = document.getElementById('edit-age-btn');
+            const editGenderBtn = document.getElementById('edit-gender-btn');
 
             editNameBtn.addEventListener('click', () => {
                 const newName = prompt('Digite o novo nome:');
                 if (newName) {
                     document.getElementById('profile-name').textContent = newName;
                     updateProfile({ nome: newName });
+                }
+            });
+
+            editAgeBtn.addEventListener('click', () => {
+                const newAge = prompt('Digite a nova idade:');
+                if (newAge) {
+                    document.getElementById('profile-age').textContent = newAge;
+                    updateProfile({ idade: newAge });
+                }
+            });
+
+            editGenderBtn.addEventListener('click', () => {
+                const newGender = prompt('Digite o novo sexo (Masculino, Feminino, Outro):');
+                if (newGender) {
+                    document.getElementById('profile-gender').textContent = newGender;
+                    updateProfile({ sexo: newGender });
                 }
             });
 

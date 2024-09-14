@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 require_once '../DB/conexao.php';
 
@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
 $userId = $_SESSION['usuario_id'];
 
 // Consulta ao banco de dados para obter as informações do perfil
-$stmt = $pdo->prepare("SELECT nome, email, imagem_perfil FROM usuarios WHERE id = :id");
+$stmt = $pdo->prepare("SELECT nome, email, idade, sexo, imagem_perfil FROM usuarios WHERE id = :id");
 $stmt->execute(['id' => $userId]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -21,6 +21,11 @@ if (!$usuario) {
 
 // Determina o caminho da imagem de perfil
 $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_perfil']) : '../Assets/default-avatar.png';
+
+$nome = htmlspecialchars($usuario['nome']);
+$email = htmlspecialchars($usuario['email']);
+$idade = htmlspecialchars($usuario['idade']);
+$sexo = htmlspecialchars($usuario['sexo']);
 
 // Verifica se o usuário já clicou hoje
 $stmt = $pdo->prepare("SELECT COUNT(*) AS clicks FROM clicks_diarios WHERE usuario_id = :usuario_id AND data = CURDATE()");
@@ -82,14 +87,18 @@ $diasRegistrados = $stmt->fetchColumn();
                 </div>
                 <!-- Main right -->
                 <div id="dashboard" class="col main-content">
-                    <div class="profile-container">
-                        <div class="profile-card">
-                            <div class="profile-header">
-                                <img id="profile-image" src="<?php echo $imagemPerfil; ?>" alt="Imagem de Perfil">
+                    <div class="profile-container2">
+                        <div class="profile-card2">
+                            <div class="profile-header2">
+                                <img id="profile-image2" src="<?php echo $imagemPerfil; ?>" alt="Imagem de Perfil">
                             </div>
                             <div class="profile-details">
-                                <p><strong>Nome:</strong> <span id="profile-name"><?php echo htmlspecialchars($usuario['nome']); ?></span></p>
+                                <p><strong>Nome:</strong> <span id="profile-name"><?php echo $nome; ?></span></p>
+                                <p><strong>Email:</strong> <?php echo $email; ?></p>
+                                <p><strong>Idade:</strong> <?php echo $idade; ?></p>
+                                <p><strong>Sexo:</strong> <?php echo $sexo; ?></p>
                                 <p><strong>Dias Registrados:</strong> <span id="dias-registrados"><?php echo $diasRegistrados; ?></span></p>
+                                
                                 <?php if ($podeClicar): ?>
                                     <button id="click-button" class="btn btn-primary">Registrar Sequência</button>
                                 <?php else: ?>

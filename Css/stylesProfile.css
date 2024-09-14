@@ -41,10 +41,11 @@
 
 .btn-pro {
     display: flex;
+    flex-direction:column-reverse;
     border: none;
     justify-content: center;
     align-items: center;
-    margin-left: 10vw;
+    margin-left: 15vw;
 }
 
 .profile-header button {
@@ -52,7 +53,8 @@
     color: #ffffff;
     text-transform: uppercase;
     border: none;
-    border-radius: 15px;
+    border-radius: 20px;
+    margin-top:15px;
 }
 
 .profile-header button:nth-of-type(2) {
