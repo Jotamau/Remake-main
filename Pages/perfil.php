@@ -1,7 +1,6 @@
 <?php
-session_start(); // Inicia a sessão
-
-require_once '../DB/conexao.php'; // Inclua a conexão com o banco de dados
+session_start();
+require_once '../DB/conexao.php';
 
 if (!isset($_SESSION['usuario_id'])) {
     echo 'Usuário não autenticado.';
@@ -19,6 +18,10 @@ if (!$usuario) {
     echo 'Usuário não encontrado.';
     exit();
 }
+
+// Determina o caminho da imagem de perfil
+$imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_perfil']) : '../Assets/default-avatar.png';
+
 ?>
 
 <!DOCTYPE html>
@@ -28,11 +31,9 @@ if (!$usuario) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Css/stylesHome.css">
     <link rel="stylesheet" href="../Css/stylesProfile.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <title>Perfil do Usuário</title>
-    
 </head>
 <body>
     <div class="main-container">
@@ -71,10 +72,9 @@ if (!$usuario) {
                 <!-- Main right -->
                 <div id="dashboard" class="col main-content">
                     <div class="profile-container">
-        
                         <div class="profile-card">
                             <div class="profile-header">
-                                <img id="profile-image" src="<?php echo $usuario['imagem_perfil'] ?: '../Assets/default-avatar.png'; ?>" alt="Imagem de Perfil">
+                                <img id="profile-image" src="<?php echo $imagemPerfil; ?>" alt="Imagem de Perfil">
                                 <div class="btn-pro">
                                     <button id="edit-image-btn" class="btn-custom">Alterar Imagem</button>
                                     <input type="file" id="image-upload" style="display: none;">
@@ -83,7 +83,6 @@ if (!$usuario) {
                                 </div>
                             </div>
                             <div class="profile-details">
-                                <!-- CODIGO PARA MOSTRAR O EMAIL DO USUARIO QUE ESTA LOGADO -->
                                 <p><strong>Email:</strong> <span id="profile-email"><?php echo htmlspecialchars($usuario['email']); ?></span></p>
                             </div>
                         </div>
@@ -159,8 +158,6 @@ if (!$usuario) {
     <script src="../Script/home.js"></script>
     <script src="../Script/cursor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
