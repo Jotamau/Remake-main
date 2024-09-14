@@ -78,8 +78,12 @@ $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_pe
                                     <button id="edit-image-btn" class="btn-custom">Alterar/adicionar Imagem</button>
                                     <input type="file" id="image-upload" style="display: none;">
                                     <button id="edit-name-btn" class="btn-custom">Alterar/adicionar Nome</button>
+                                    
+                                    <div class="btn-2">
                                     <button id="edit-age-btn" class="btn-custom">Alterar/adicionar Idade</button>
                                     <button id="edit-gender-btn" class="btn-custom">Alterar/adicionar Sexo</button>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="profile-details">
