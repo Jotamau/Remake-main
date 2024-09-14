@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 14/09/2024 às 04:44
+-- Tempo de geração: 14/09/2024 às 08:57
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.0.28
 
@@ -39,21 +39,9 @@ CREATE TABLE `clicks_diarios` (
 
 INSERT INTO `clicks_diarios` (`id`, `usuario_id`, `data`) VALUES
 (1, 1, '2024-09-13'),
+(4, 1, '2024-09-14'),
 (2, 3, '2024-09-13'),
 (3, 4, '2024-09-13');
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `tasks`
---
-
-CREATE TABLE `tasks` (
-  `id` int(11) NOT NULL,
-  `task_name` varchar(255) NOT NULL,
-  `status` enum('todo','done') DEFAULT 'todo',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -78,7 +66,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `usuario`, `email`, `senha`, `nome`, `imagem_perfil`, `data_cadastro`, `idade`, `sexo`) VALUES
-(1, 'joao', 'teste@gmail.com', '$2y$10$FMWWebT86DVxvIM6y9v8auZbccedkRrBPBQge8YVTZnVYyfG0Zu62', 'joao', '../Assets/profile_images/66e4dfdebee26.png', '2024-09-11 16:23:24', NULL, NULL),
+(1, 'joao', 'teste@gmail.com', '$2y$10$FMWWebT86DVxvIM6y9v8auZbccedkRrBPBQge8YVTZnVYyfG0Zu62', 'joao', '../Assets/profile_images/66e4dfdebee26.png', '2024-09-11 16:23:24', 18, 'Masculino'),
 (2, 'joao', 'nao@gmail.com', '$2y$10$BXzo37Mkr1vuqYB2sLVCZ.q79mbCEkSD/ssv4x2mefyf0sf8D7/0q', NULL, NULL, '2024-09-11 17:45:22', NULL, NULL),
 (3, 'joao123', 'para@gmail.com', '$2y$10$16FvCfw0Z1EuUYxafTriO.n51A/pUll8FHAnUQ3ImebEZ.NfMX7Gu', 'Geovani', '../Assets/profile_images/66e4edda76d51.png', '2024-09-11 19:10:08', 20, 'Masculino'),
 (4, 'breno', 'breno@gmail.com', '$2y$10$0V9wAUuiW8DucIHg4NtKQ.mXr8Tgo2c1aKVPPjChn0uQcltNRNXay', 'Breno', '../Assets/profile_images/66e4f808e261c.png', '2024-09-14 02:41:15', 42, 'Masculino');
@@ -95,12 +83,6 @@ ALTER TABLE `clicks_diarios`
   ADD UNIQUE KEY `usuario_id_data` (`usuario_id`,`data`);
 
 --
--- Índices de tabela `tasks`
---
-ALTER TABLE `tasks`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Índices de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -115,13 +97,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `clicks_diarios`
 --
 ALTER TABLE `clicks_diarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de tabela `tasks`
---
-ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
