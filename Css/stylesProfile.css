@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-emphasis-color: black;
 }
 
 .profile-container {
@@ -16,8 +17,8 @@
 
 .profile-card {
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 1vw;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
     padding: 20px;
     width: 50vw;
 }
@@ -41,11 +42,14 @@
 
 .btn-pro {
     display: flex;
-    flex-direction:column-reverse;
+    flex-direction:column;
     border: none;
     justify-content: center;
     align-items: center;
-    margin-left: 15vw;
+    margin-left: 25vw;
+    height: 4vw;
+    margin-top: 6vw;
+    width: 1vw;
 }
 
 .profile-header button {
@@ -54,7 +58,6 @@
     text-transform: uppercase;
     border: none;
     border-radius: 20px;
-    margin-top:15px;
 }
 
 .profile-header button:nth-of-type(2) {
@@ -62,7 +65,7 @@
 }
 
 .profile-header button:hover {
-    background-color: #0056b3;
+    background-color: #280449;
 }
 
 /* Novo CSS para <h2> */
@@ -79,7 +82,7 @@
 }
 
 .profile-details strong {
-    color: #007bff;
+    color: #000000;
 }
 
 #profile-email, #profile-name {
@@ -89,12 +92,13 @@
 
 .btn-custom {
     margin-top: 10px;
-    background-color: #007bff;
+    background-color: #000000;
     color: #fff;
+    
 }
 
 .btn-custom:hover {
-    background-color: #0056b3;
+    background-color: #ffffff;
 }
 
 .sidebar {
