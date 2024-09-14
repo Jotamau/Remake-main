@@ -78,12 +78,12 @@ $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_pe
                                 <div class="btn-pro">
                                     <button id="edit-image-btn" class="btn-custom">Alterar Imagem</button>
                                     <input type="file" id="image-upload" style="display: none;">
-                                    <h2 id="profile-name"><?php echo htmlspecialchars($usuario['nome']); ?></h2>
                                     <button id="edit-name-btn" class="btn-custom">Alterar Nome</button>
                                 </div>
                             </div>
                             <div class="profile-details">
                                 <p><strong>Email:</strong> <span id="profile-email"><?php echo htmlspecialchars($usuario['email']); ?></span></p>
+                                <p><strong>Nome:</strong> <span id="profile-name"><?php echo htmlspecialchars($usuario['nome']); ?></span></p>
                             </div>
                         </div>
                     </div>
