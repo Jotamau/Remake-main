@@ -1,6 +1,3 @@
-/* ☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷ CRIAR PROJETOS ☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷☷ */
-
-
 // Seleção de elementos
 const todoForm = document.querySelector("#todo-form");
 const todoInput = document.querySelector("#todo-input");
@@ -15,7 +12,7 @@ const filterBtn = document.querySelector("#filter-select");
 let oldInputValue;
 
 // Funções
-const saveTodo = (text, done = 0, save = 1) => {
+const saveTodo = async (text, done = 0, save = 1, id = null) => {
   const todo = document.createElement("div");
   todo.classList.add("todo");
 
@@ -38,218 +35,104 @@ const saveTodo = (text, done = 0, save = 1) => {
   deleteBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
   todo.appendChild(deleteBtn);
 
-  // dados da localStorage
+  // Adiciona id do todo no DOM
+  todo.dataset.id = id;
+
   if (done) {
     todo.classList.add("done");
   }
 
-  if (save) {
-    saveTodoLocalStorage({ text, done: 0 });
-  }
-
   todoList.appendChild(todo);
-
   todoInput.value = "";
+
+  if (save) {
+    // Envia requisição POST para salvar tarefa
+    const response = await fetch('tarefas.php', {
+      method: 'POST',
+      body: new URLSearchParams({ text })
+    });
+    const newTodo = await response.json();
+    if (newTodo.id) {
+      todo.dataset.id = newTodo.id; // Atualiza o id do DOM com o ID do banco de dados
+    }
+  }
 };
 
-const toggleForms = () => {
-  editForm.classList.toggle("hide");
-  todoForm.classList.toggle("hide");
-  todoList.classList.toggle("hide");
+const loadTodos = async () => {
+  const response = await fetch('tarefas.php');
+  const todos = await response.json();
+  todos.forEach((todo) => saveTodo(todo.text, todo.done, 0, todo.id));
 };
 
-const updateTodo = (text) => {
+const updateTodo = async (id, text) => {
   const todos = document.querySelectorAll(".todo");
-
   todos.forEach((todo) => {
     let todoTitle = todo.querySelector("h3");
-
-    if (todoTitle.innerText === oldInputValue) {
+    if (todo.dataset.id == id) {
       todoTitle.innerText = text;
-
-      // dados da localStorage
-
-      updateTodoLocalStorage(oldInputValue, text);
     }
+  });
+
+  // Atualiza no banco de dados
+  await fetch('tarefas.php', {
+    method: 'PUT',
+    body: new URLSearchParams({ id, text })
   });
 };
 
-const getSearchedTodos = (search) => {
-  const todos = document.querySelectorAll(".todo");
-
-  todos.forEach((todo) => {
-    const todoTitle = todo.querySelector("h3").innerText.toLowerCase();
-
-    todo.style.display = "flex";
-
-    console.log(todoTitle);
-
-    if (!todoTitle.includes(search)) {
-      todo.style.display = "none";
-    }
+const removeTodo = async (id, element) => {
+  element.remove();
+  await fetch('tarefas.php', {
+    method: 'DELETE',
+    body: new URLSearchParams({ id })
   });
-};
-
-const filterTodos = (filterValue) => {
-  const todos = document.querySelectorAll(".todo");
-
-  switch (filterValue) {
-    case "all":
-      todos.forEach((todo) => (todo.style.display = "flex"));
-
-      break;
-
-    case "done":
-      todos.forEach((todo) =>
-        todo.classList.contains("done")
-          ? (todo.style.display = "flex")
-          : (todo.style.display = "none")
-      );
-
-      break;
-
-    case "todo":
-      todos.forEach((todo) =>
-        !todo.classList.contains("done")
-          ? (todo.style.display = "flex")
-          : (todo.style.display = "none")
-      );
-
-      break;
-
-    default:
-      break;
-  }
 };
 
 // Eventos
-
-todoForm.addEventListener("submit", (e) => {
+todoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   const inputValue = todoInput.value;
-
   if (inputValue) {
     saveTodo(inputValue);
   }
 });
 
-document.addEventListener("click", (e) => {
+document.addEventListener("click", async (e) => {
   const targetEl = e.target;
   const parentEl = targetEl.closest("div");
-  let todoTitle;
-
-  if (parentEl && parentEl.querySelector("h3")) {
-    todoTitle = parentEl.querySelector("h3").innerText || "";
-  }
+  const todoId = parentEl?.dataset.id;
 
   if (targetEl.classList.contains("finish-todo")) {
     parentEl.classList.toggle("done");
-
-    updateTodoStatusLocalStorage(todoTitle);
+    const done = parentEl.classList.contains("done") ? 1 : 0;
+    await fetch('tarefas.php', {
+      method: 'PATCH',
+      body: new URLSearchParams({ id: todoId, done })
+    });
   }
 
   if (targetEl.classList.contains("remove-todo")) {
-    parentEl.remove();
-
-    // Utilizando dados da localStorage
-    removeTodoLocalStorage(todoTitle);
+    removeTodo(todoId, parentEl);
   }
 
   if (targetEl.classList.contains("edit-todo")) {
     toggleForms();
-
-    editInput.value = todoTitle;
-    oldInputValue = todoTitle;
+    editInput.value = parentEl.querySelector("h3").innerText;
+    oldInputValue = parentEl.querySelector("h3").innerText;
   }
 });
 
-cancelEditBtn.addEventListener("click", (e) => {
+editForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  toggleForms();
-});
-
-editForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
   const editInputValue = editInput.value;
+  const todos = document.querySelectorAll(".todo");
+  const todo = Array.from(todos).find(t => t.querySelector("h3").innerText === oldInputValue);
+  const todoId = todo?.dataset.id;
 
-  if (editInputValue) {
-    updateTodo(editInputValue);
+  if (editInputValue && todoId) {
+    updateTodo(todoId, editInputValue);
   }
-
   toggleForms();
 });
-
-searchInput.addEventListener("keyup", (e) => {
-  const search = e.target.value;
-
-  getSearchedTodos(search);
-});
-
-eraseBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  searchInput.value = "";
-
-  searchInput.dispatchEvent(new Event("keyup"));
-});
-
-filterBtn.addEventListener("change", (e) => {
-  const filterValue = e.target.value;
-
-  filterTodos(filterValue);
-});
-
-// Local Storage
-const getTodosLocalStorage = () => {
-  const todos = JSON.parse(localStorage.getItem("todos")) || [];
-
-  return todos;
-};
-
-const loadTodos = () => {
-  const todos = getTodosLocalStorage();
-
-  todos.forEach((todo) => {
-    saveTodo(todo.text, todo.done, 0);
-  });
-};
-
-const saveTodoLocalStorage = (todo) => {
-  const todos = getTodosLocalStorage();
-
-  todos.push(todo);
-
-  localStorage.setItem("todos", JSON.stringify(todos));
-};
-
-const removeTodoLocalStorage = (todoText) => {
-  const todos = getTodosLocalStorage();
-
-  const filteredTodos = todos.filter((todo) => todo.text != todoText);
-
-  localStorage.setItem("todos", JSON.stringify(filteredTodos));
-};
-
-const updateTodoStatusLocalStorage = (todoText) => {
-  const todos = getTodosLocalStorage();
-
-  todos.map((todo) =>
-    todo.text === todoText ? (todo.done = !todo.done) : null
-  );
-
-  localStorage.setItem("todos", JSON.stringify(todos));
-};
-
-const updateTodoLocalStorage = (todoOldText, todoNewText) => {
-  const todos = getTodosLocalStorage();
-
-  todos.map((todo) =>
-    todo.text === todoOldText ? (todo.text = todoNewText) : null
-  );
-
-  localStorage.setItem("todos", JSON.stringify(todos));
-};
 
 loadTodos();

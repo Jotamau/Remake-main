@@ -1,5 +1,11 @@
-const cursorDot = document.querySelector("[data-cursor-dot]");
-const cursorOutline = document.querySelector("[data-cursor-outline]");
+document.addEventListener('DOMContentLoaded', () => {
+    const cursorDot = document.querySelector("[data-cursor-dot]");
+    const cursorOutline = document.querySelector("[data-cursor-outline]");
+// Verifica se os elementos do cursor existem
+if (!cursorDot || !cursorOutline) {
+    console.error("Os elementos do cursor não foram encontrados.");
+    return;}
+
 
 window.addEventListener("mousemove", function (e) {
     const posX = e.clientX;
@@ -15,5 +21,5 @@ window.addEventListener("mousemove", function (e) {
         left: `${posX}px`,
         top: `${posY}px`
     }, {duration: 500, fill: "forwards"});
-
+})
 });

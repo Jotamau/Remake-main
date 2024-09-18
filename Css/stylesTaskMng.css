@@ -166,4 +166,43 @@
     text-decoration: line-through;
     font-style: italic;
 }
+/* Adicione isso ao CSS da página */
+[data-cursor-dot] {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: rgb(240, 0, 0);
+    pointer-events: none; /* Ignorar eventos de mouse */
+    z-index: 9999; /* Estar na frente de outros elementos */
+    transition: transform 0.2s ease; /* Animação de transição */
+}
+
+[data-cursor-outline] {
+    width: 30px;
+    height: 30px;
+    border: 2px solid hsla(0, 3%, 65%, 0.5);
+    border: 2px solid hsla(0, 0%, 100%, 0.5);
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none; /* Ignorar eventos de mouse */
+    z-index: 9999; /* Estar na frente de outros elementos */
+    transition: transform 0.5s ease; /* Animação de transição */
+}
+
+/* Classe para animação */
+[data-cursor-outline].moving {
+    transform: scale(1.5); /* Aumenta o tamanho quando se move */
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Coloca atrás de outros elementos */
+}
+
+
+
 
