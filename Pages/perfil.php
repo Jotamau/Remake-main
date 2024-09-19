@@ -39,7 +39,7 @@ $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_pe
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
-                <div class="col-auto min-vh-100 sidebar px-3 d-flex flex-column">
+                <div class="col-auto min-vh-100 sidebar px-3 d-flex flex-column" id="sidebar">
                     <div class="pt-4 pb-2 px-4">
                         <a href="" class="text-decoration-none text-white d-flex align-items-center">
                             <img src="../Assets/logo.svg" alt="" style="width: 50px; height: 50px;">
@@ -75,11 +75,15 @@ $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_pe
                             <div class="profile-header">
                                 <img id="profile-image" src="<?php echo $imagemPerfil; ?>" alt="Imagem de Perfil">
                                 <div class="btn-pro">
-                                    <button id="edit-image-btn" class="btn-custom">Alterar/adicionar Imagem</button>
-                                    <input type="file" id="image-upload" style="display: none;">
-                                    <button id="edit-name-btn" class="btn-custom">Alterar/adicionar Nome</button>
-                                    <button id="edit-age-btn" class="btn-custom">Alterar/adicionar Idade</button>
-                                    <button id="edit-gender-btn" class="btn-custom">Alterar/adicionar Sexo</button>
+    
+                                    <div class="btn-justify">
+                                        <button id="edit-image-btn" class="btn-custom">Alterar/adicionar Imagem</button>
+                                        <input type="file" id="image-upload" style="display: none;">
+                                        <button id="edit-name-btn" class="btn-custom">Alterar/adicionar Nome</button>
+                                        <button id="edit-age-btn" class="btn-custom">Alterar/adicionar Idade</button>
+                                        <button id="edit-gender-btn" class="btn-custom">Alterar/adicionar Sexo</button>
+                                    </div>        
+
                                 </div>
                             </div>
                             <div class="profile-details">

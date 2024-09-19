@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost';
+$host = 'localhost:3307';
 $db = 'taskify'; // Nome do banco de dados
 $user = 'root'; // Usuário do banco de dados
 $pass = ''; // Senha do banco de dados

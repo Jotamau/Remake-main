@@ -114,16 +114,15 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
     padding: 20px;
-    width: 20vw;
+    width: 50vw;
 }
 
 .profile-header2 {
     display: flex;
-    justify-content: flex-start; /* Alinhamento flexível inicial */
+    justify-content: center; 
     gap: 20px;
     margin-bottom: 20px;
-    margin-left: 4vw;
-    align-items: center; /* Centraliza verticalmente */
+    align-items: center;
 }
 
 .profile-header2 img {
@@ -132,5 +131,8 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #ddd;
-    margin-left: 2vw;
+}
+
+#sidebar {
+    height: 100%;
 }
