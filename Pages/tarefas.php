@@ -1,64 +1,44 @@
 <?php
-// Incluir a conexão com o banco de dados
-require_once '../DB/conexao.php';
+include('../DB/conexao.php');
 
-// Função para buscar todas as tarefas
-function fetchTarefas($pdo) {
-    $stmt = $pdo->query("SELECT * FROM tarefas ORDER BY created_at DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Adicionar tarefa
+if (isset($_POST['add_tarefa'])) {
+    $text = $_POST['text'];
+    $stmt = $pdo->prepare("INSERT INTO tarefas (text, done) VALUES (:text, 0)");
+    $stmt->execute(['text' => $text]);
+    header("Location: tarefas.php");
 }
 
-// Função para adicionar uma nova tarefa
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['text']) && !empty(trim($_POST['text']))) {
-        $text = trim($_POST['text']);
-
-        // Preparar e executar a inserção
-        $stmt = $pdo->prepare("INSERT INTO tarefas (text) VALUES (:text)");
-        $stmt->execute(['text' => $text]);
-    }
-
-    // Redirecionar para a página principal após a submissão
-    header('Location: tarefas.php');
-    exit;
-}
-
-// Função para marcar tarefa como feita ou não
+// Marcar tarefa como concluída
 if (isset($_POST['update_tarefa'])) {
-    $id = $_POST['id'] ?? 0;
-    $done = isset($_POST['done']) && $_POST['done'] ? 0 : 1;
-
-    // Preparar e executar a atualização
+    $id = $_POST['id'];
+    $done = $_POST['done'] == 0 ? 1 : 0; // Alterna entre concluído e não concluído
     $stmt = $pdo->prepare("UPDATE tarefas SET done = :done WHERE id = :id");
     $stmt->execute(['done' => $done, 'id' => $id]);
-
-    header('Location: tarefas.php');
-    exit;
+    header("Location: tarefas.php");
 }
 
-// Função para deletar uma tarefa
+// Excluir tarefa
 if (isset($_POST['delete_tarefa'])) {
-    $id = $_POST['id'] ?? 0;
-
-    // Preparar e executar a deleção
+    $id = $_POST['id'];
     $stmt = $pdo->prepare("DELETE FROM tarefas WHERE id = :id");
     $stmt->execute(['id' => $id]);
-
-    header('Location: tarefas.php');
-    exit;
-}
-// Verifica se um ID foi passado para edição
-if (isset($_GET['id'])) {
-  $id = $_GET['id'];
-
-  // Busca a tarefa correspondente ao ID
-  $stmt = $pdo->prepare("SELECT * FROM tarefas WHERE id = :id");
-  $stmt->execute(['id' => $id]);
-  $tarefaEdicao = $stmt->fetch(PDO::FETCH_ASSOC);
+    header("Location: tarefas.php");
 }
 
-// Pegar todas as tarefas para exibição
-$tarefas = fetchTarefas($pdo);
+// Editar tarefa
+if (isset($_POST['edit_tarefa'])) {
+    $id = $_POST['id'];
+    $new_text = $_POST['new_text'];
+    $stmt = $pdo->prepare("UPDATE tarefas SET text = :text WHERE id = :id");
+    $stmt->execute(['text' => $new_text, 'id' => $id]);
+    header("Location: tarefas.php");
+}
+
+// Buscar todas as tarefas
+$stmt = $pdo->prepare("SELECT * FROM tarefas ORDER BY id DESC");
+$stmt->execute();
+$tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -97,7 +77,6 @@ $tarefas = fetchTarefas($pdo);
 
         Particles.init(particlesSettings);
     </script>
-
     <div class="main-container">
         <!-- Sidebar -->
         <div class="container-fluid">
@@ -133,68 +112,59 @@ $tarefas = fetchTarefas($pdo);
                 </div>
             </div>
 
+      
             <!-- Conteúdo principal -->
             <div id="dashboard" class="col main-content">
                 <div class="container-right">
                     <div class="todo-container">
-                        <div id="todo-topo">
-                            <h1>To do task</h1>
-                        </div>
-                        <form id="todo-form" action="tarefas.php" method="POST">
-                            <p>Adicione sua tarefa</p>
+                        <h1>To do task</h1>
+
+                        <!-- Formulário de Adicionar Tarefa -->
+                        <form action="tarefas.php" method="POST">
                             <div class="form-control">
-                                <div class="form-control2">
-                                    <input type="text" name="text" id="todo-input" placeholder="O que você vai fazer?" required />
-                                    <button type="submit">
-                                        <i class="fa-thin fa-plus"></i>
-                                    </button>
-                                </div>
+                                <input type="text" name="text" placeholder="O que você vai fazer?" required>
+                                <button type="submit" name="add_tarefa"><i class="fa-thin fa-plus"></i></button>
                             </div>
                         </form>
 
-                        <div id="toolbar">
-                            <div id="search">
-                                <h4>Pesquisar:</h4>
-                                <input type="text" id="search-input" placeholder="Buscar..." />
-                            </div>
-                            <div id="filter">
-                                <h4>Filtrar:</h4>
-                                <select id="filter-select">
-                                    <option value="all">Todos</option>
-                                    <option value="done">Feitos</option>
-                                    <option value="todo">A fazer</option>
-                                </select>
-                            </div>
-                        </div>
-
+                        <!-- Listar Tarefas -->
                         <div id="todo-list">
                             <?php foreach ($tarefas as $tarefa): ?>
-                                <div class="todo <?php echo $tarefa['done'] ? 'done' : ''; ?>">
-                                    <h3><?php echo htmlspecialchars($tarefa['text'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                <div class="todo-item <?= $tarefa['done'] ? 'completed' : '' ?>">
+                                    <h3><?= htmlspecialchars($tarefa['text']) ?></h3>
+
+                                    <!-- Marcar como concluído -->
                                     <form method="POST" style="display:inline;">
-                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($tarefa['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                        <input type="hidden" name="done" value="<?php echo htmlspecialchars($tarefa['done'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="hidden" name="id" value="<?= $tarefa['id'] ?>">
+                                        <input type="hidden" name="done" value="<?= $tarefa['done'] ?>">
                                         <button type="submit" name="update_tarefa" class="finish-todo">
                                             <i class="fa-solid fa-check"></i>
                                         </button>
                                     </form>
+
+                                    <!-- Excluir tarefa -->
                                     <form method="POST" style="display:inline;">
-                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($tarefa['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="hidden" name="id" value="<?= $tarefa['id'] ?>">
                                         <button type="submit" name="delete_tarefa" class="remove-todo">
                                             <i class="fa-solid fa-xmark"></i>
                                         </button>
                                     </form>
-                                    <!-- Botão de Editar -->
-                                    <form method="GET" action="tarefas.php" style="display:inline;">
-                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($tarefa['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                        <button type="submit" class="edit-todo">
-                                            <i class="fa-solid fa-pencil"></i>
-                                        </button>
+
+                                    <!-- Editar tarefa -->
+                                    <button class="edit-todo" onclick="document.getElementById('edit-<?= $tarefa['id'] ?>').style.display = 'block';">
+                                        <i class="fa-solid fa-pencil"></i>
+                                    </button>
+
+                                    <!-- Formulário de Edição (inicialmente escondido) -->
+                                    <form id="edit-<?= $tarefa['id'] ?>" action="tarefas.php" method="POST" style="display:none;">
+                                        <input type="hidden" name="id" value="<?= $tarefa['id'] ?>">
+                                        <input type="text" name="new_text" value="<?= htmlspecialchars($tarefa['text']) ?>" required>
+                                        <button type="submit" name="edit_tarefa">Salvar</button>
                                     </form>
                                 </div>
+                               
                             <?php endforeach; ?>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -203,10 +173,9 @@ $tarefas = fetchTarefas($pdo);
 
     <!-- Scripts -->
     <script src="../Script/cursor.js"></script>
-    <script src="../Script/todo.js"></script>
     <script src="../Script/home.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         particlesJS.load('particles-js', 'path/to/particles.json', function() {
             console.log('callback - particles.js config loaded');

@@ -1,208 +1,101 @@
-/*geral*/
+/* Estilos para a lista de tarefas */
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #f4f4f4;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
+.todo-item h3 {
+    font-size: 1.1rem;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+/* Tarefa completada */
+.todo-item.completed {
+    background-color: #1713ff; /* Verde claro */
+    text-decoration: line-through;
+    color: #ffffff; /* Verde mais escuro */
+}
+
+.todo-item.completed h3 {
+    font-style: italic;
+}
+/* Estilo do gerenciador de tarefas com fundo igual ao .profile-card2 */
+
+/* Estilizando o container das tarefas */
+.todo-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    margin-top: 20px;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    z-index: 1; /* Certifique-se de que o z-index é menor que o do cursor */
+
+}
+
+/* Botões */
 .todo-container button {
-    background-color:#ffffff;
+    background-color: #fff;
     color: #23232e;
     border: 2px solid #23232e;
     padding: .3rem .6rem;
     font-size: 1rem;
+    transition: 0.4s;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 0.4s;
-    border-radius: 20px;
 }
 
 .todo-container button:hover {
     background-color: #23232e;
-    color: #ffffff;
-    border: 2px solid #ffffff;
-}
-
-.todo-container button:hover > i {
-    color: #ffffff;
+    color: #fff;
+    border: 2px solid #fff;
 }
 
 .todo-container button > i {
     color: #23232e;
-    font-weight: bold;
     pointer-events: none;
 }
 
-.todo-container button > i:hover {
-    color: #ffffff;
-    font-weight: bold;
-    pointer-events: none;
+/* Cursor personalizado */
+[data-cursor-dot], [data-cursor-outline] {
+    position: fixed; /* Assegura que o cursor esteja sempre visível */
+    transition: transform 0.5s ease;
+    z-index: 9999; /* Certifique-se de que o cursor está acima de outros elementos */
 }
 
-.todo-container input,select {
-    padding: 0.25rem 0.5rem;
-}
-
-/*#edit form*/
-.hide {
-    display: none;
-}
-
-/*todo header*/
-
-.todo-container {
-    font-family: 'Poppins', sans-serif;
-    width: 50vw;
-    margin: 3rem auto 0;
-    padding: 1.5rem;
-    border-radius: 15px;
-    z-index: 1;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff;
-    box-sizing: border-box;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-}
-
-
-#todo-topo {
-    text-align: center;
-    padding: 0 1rem 1rem;
-    border-bottom: 1px solid #ccc;
-}
-
-#todo-topo h1 {
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-/*todo form*/
-
-#todo-form, #edit-form {
-    padding: 1rem;
-    border-bottom: 1px solid #ccc;
-}
-
-#todo-form p,
-#edit-form p {
-    margin-bottom: .5rem;
-    font-weight: bold;
-}
-
-.form-control2 {
-    display: flex;
-}
-
-.form-control2 input {
-    margin-right: .3rem;
-}
-
-#cancel-edit-btn {
-    margin-top: 1rem;
-}
-
-/*tool bar*/
-
-#toolbar {
-    padding: 1rem;
-    border-bottom: #ccc;
-    display: flex;
-}
-
-#toolbar h4 {
-    margin-bottom: .5rem;
-}
-
-#search {
-    border-right: 1px solid #ddd;
-    padding-right: 1rem;
-    margin-right: 1rem;
-    width: 65%;
-    display: flex;
-    flex-direction: column;
-}
-
-#search form {
-    display: flex;
-}
-
-#search input {
-    width: 100%;
-    margin-right: .3rem;
-}
-
-#filter {
-    width: 35%;
-    display: flex;
-    flex-direction: column;
-}
-
-#filter select {
-    flex: 1;
-}
-
-/*todo list*/
-
-.todo {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid #ccc;
-    transition: .3s;
-}
-
-.todo h3 {
-    flex: 1;
-    font-size: 0.9rem;
-}
-
-.todo button {
-    margin-left: 0.4rem;
-}
-
-.done {
-    background-color: #395169;
-}
-
-.done h3 {
-    color: #ffffff;
-    text-decoration: line-through;
-    font-style: italic;
-}
-/* Adicione isso ao CSS da página */
+/* Estilo específico para o cursor */
 [data-cursor-dot] {
-    position: absolute;
     width: 5px;
     height: 5px;
     background-color: rgb(240, 0, 0);
-    pointer-events: none; /* Ignorar eventos de mouse */
-    z-index: 9999; /* Estar na frente de outros elementos */
-    transition: transform 0.2s ease; /* Animação de transição */
 }
 
 [data-cursor-outline] {
     width: 30px;
     height: 30px;
-    border: 2px solid hsla(0, 3%, 65%, 0.5);
     border: 2px solid hsla(0, 0%, 100%, 0.5);
-    position: absolute;
     border-radius: 50%;
-    pointer-events: none; /* Ignorar eventos de mouse */
-    z-index: 9999; /* Estar na frente de outros elementos */
-    transition: transform 0.5s ease; /* Animação de transição */
 }
 
-/* Classe para animação */
-[data-cursor-outline].moving {
-    transform: scale(1.5); /* Aumenta o tamanho quando se move */
-}
 
+/* Partículas */
 #particles-js {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Coloca atrás de outros elementos */
+    z-index: -1;
 }
-
-
-
-
