@@ -1,49 +1,61 @@
 <?php
 include('../DB/conexao.php');
+session_start(); // Inicia a sessão
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$usuario_id = $_SESSION['usuario_id']; // ID do usuário logado
 
 // Adicionar tarefa
 if (isset($_POST['add_tarefa'])) {
     $text = $_POST['text'];
-    $stmt = $pdo->prepare("INSERT INTO tarefas (text, done) VALUES (:text, 0)");
-    $stmt->execute(['text' => $text]);
+    $stmt = $pdo->prepare("INSERT INTO tarefas (text, done, usuario_id) VALUES (:text, 0, :usuario_id)");
+    $stmt->execute(['text' => $text, 'usuario_id' => $usuario_id]);
     header("Location: tarefas.php");
+    exit();
 }
 
 // Marcar tarefa como concluída
 if (isset($_POST['update_tarefa'])) {
     $id = $_POST['id'];
     $done = $_POST['done'] == 0 ? 1 : 0; // Alterna entre concluído e não concluído
-    $stmt = $pdo->prepare("UPDATE tarefas SET done = :done WHERE id = :id");
-    $stmt->execute(['done' => $done, 'id' => $id]);
+    $stmt = $pdo->prepare("UPDATE tarefas SET done = :done WHERE id = :id AND usuario_id = :usuario_id");
+    $stmt->execute(['done' => $done, 'id' => $id, 'usuario_id' => $usuario_id]);
     header("Location: tarefas.php");
+    exit();
 }
 
 // Excluir tarefa
 if (isset($_POST['delete_tarefa'])) {
     $id = $_POST['id'];
-    $stmt = $pdo->prepare("DELETE FROM tarefas WHERE id = :id");
-    $stmt->execute(['id' => $id]);
+    $stmt = $pdo->prepare("DELETE FROM tarefas WHERE id = :id AND usuario_id = :usuario_id");
+    $stmt->execute(['id' => $id, 'usuario_id' => $usuario_id]);
     header("Location: tarefas.php");
+    exit();
 }
 
 // Editar tarefa
 if (isset($_POST['edit_tarefa'])) {
     $id = $_POST['id'];
     $new_text = $_POST['new_text'];
-    $stmt = $pdo->prepare("UPDATE tarefas SET text = :text WHERE id = :id");
-    $stmt->execute(['text' => $new_text, 'id' => $id]);
+    $stmt = $pdo->prepare("UPDATE tarefas SET text = :text WHERE id = :id AND usuario_id = :usuario_id");
+    $stmt->execute(['text' => $new_text, 'id' => $id, 'usuario_id' => $usuario_id]);
     header("Location: tarefas.php");
+    exit();
 }
 
-// Buscar todas as tarefas
-$stmt = $pdo->prepare("SELECT * FROM tarefas ORDER BY id DESC");
-$stmt->execute();
+// Buscar todas as tarefas do usuário logado
+$stmt = $pdo->prepare("SELECT * FROM tarefas WHERE usuario_id = :usuario_id ORDER BY id DESC");
+$stmt->execute(['usuario_id' => $usuario_id]);
 $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,13 +68,12 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <title>Tarefas</title>
 </head>
-
 <body>
     <!-- Cursor personalizado -->
     <div data-cursor-dot class="cursor-dot"></div>
     <div data-cursor-outline class="cursor-outline"></div>
     <canvas id="particles-js"></canvas>
-    
+
     <!-- Script do Particle.js -->
     <script src="../node_modules/particlesjs/dist/particles.js"></script>
     <script>
@@ -77,6 +88,7 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         Particles.init(particlesSettings);
     </script>
+
     <div class="main-container">
         <!-- Sidebar -->
         <div class="container-fluid">
@@ -112,7 +124,6 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
 
-      
             <!-- Conteúdo principal -->
             <div id="dashboard" class="col main-content">
                 <div class="container-right">
@@ -162,7 +173,6 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <button type="submit" name="edit_tarefa">Salvar</button>
                                     </form>
                                 </div>
-                               
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -182,5 +192,4 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         });
     </script>
 </body>
-
 </html>
