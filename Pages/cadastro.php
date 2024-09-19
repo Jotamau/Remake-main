@@ -64,7 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <button type="submit" class="btn-login">Cadastrar</button>
                 </form>
+                <br>
                 <span><a href="login.php"> Já tem uma conta ? clique aqui </a></span>
+                <br>
+                <span><a href="../index.php">Voltar</a></span>
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     border-radius: 10px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -31,6 +32,7 @@
 
 /* Estilizando o container das tarefas */
 .todo-container {
+    width: 100vh;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
@@ -39,34 +41,43 @@
     z-index: 1;
     justify-content: center;
     align-items: center;
-    z-index: 1; /* Certifique-se de que o z-index é menor que o do cursor */
+    z-index: 1; 
 
+}
+
+.todo-container h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 2px;
+}
+
+.form-control {
+    display: flex;
 }
 
 /* Botões */
 .todo-container button {
     background-color: #fff;
-    color: #23232e;
     border: 2px solid #23232e;
     padding: .3rem .6rem;
     font-size: 1rem;
     transition: 0.4s;
     border-radius: 20px;
-    display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .todo-container button:hover {
-    background-color: #23232e;
-    color: #fff;
-    border: 2px solid #fff;
+    background-color: #d3d3d3;
+    border: 2px solid #000000;
 }
 
 .todo-container button > i {
-    color: #23232e;
+    color: #0000ff;
     pointer-events: none;
 }
+
 
 /* Cursor personalizado */
 [data-cursor-dot], [data-cursor-outline] {
@@ -90,12 +101,11 @@
 }
 
 
+
 /* Partículas */
 #particles-js {
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 1;
 }
