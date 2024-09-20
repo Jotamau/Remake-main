@@ -2,13 +2,13 @@
 html,
 body {
     position: relative;
-    overflow: hidden;
     min-height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
     margin: 0; /* Remove margens padrão */
     background-color: #151019 !important;
     z-index: -1;
     cursor: none;
     font-family: 'Poppins', sans-serif;
+    
 }
 
 /*==================================================== Background ====================================================*/
@@ -126,8 +126,9 @@ body {
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ddd;
+    border: 2px solid #000000;
 }
+
 
 /*==================================================== Tasks Section ================================================*/
 .tasks-container {
@@ -149,6 +150,10 @@ body {
     color: white;
     max-height: 200px; /* Altura máxima do card */
     overflow: hidden; /* Esconde conteúdo que transborda */
+}
+
+.col-12.col-md-6.col-lg-4 {
+    width: auto;
 }
 
 .task-status {
