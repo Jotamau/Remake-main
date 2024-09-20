@@ -1,19 +1,13 @@
 html,
 body {
     position: relative;
-<<<<<<< HEAD
     overflow: hidden;
     min-height: 100vh;
     margin: 0;
-=======
-    min-height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
-    margin: 0; /* Remove margens padrão */
->>>>>>> 9f5448e54253ac041d81c1df35f07503a06ce2f8
     background-color: #151019 !important;
     z-index: -1;
     cursor: none;
     font-family: 'Poppins', sans-serif;
-    
 }
 
 .background {
@@ -128,14 +122,9 @@ body {
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #000000;
+    border: 2px solid #ddd;
 }
 
-<<<<<<< HEAD
-=======
-
-/*==================================================== Tasks Section ================================================*/
->>>>>>> 9f5448e54253ac041d81c1df35f07503a06ce2f8
 .tasks-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -155,10 +144,6 @@ body {
     color: white;
     max-height: 200px;
     overflow: hidden;
-}
-
-.col-12.col-md-6.col-lg-4 {
-    width: auto;
 }
 
 .task-status {
