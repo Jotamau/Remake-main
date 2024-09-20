@@ -123,7 +123,6 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </ul>
                 </div>
             </div>
-
             <!-- Conteúdo principal -->
             <div id="dashboard" class="col main-content">
                 <div class="container-right">

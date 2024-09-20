@@ -19,9 +19,7 @@ if (!$usuario) {
     exit();
 }
 
-// Determina o caminho da imagem de perfil
 $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_perfil']) : '../Assets/default-avatar.png';
-
 $nome = htmlspecialchars($usuario['nome']);
 $email = htmlspecialchars($usuario['email']);
 $idade = htmlspecialchars($usuario['idade']);
@@ -38,6 +36,11 @@ $podeClicar = $clickHoje == 0;
 $stmt = $pdo->prepare("SELECT COUNT(DISTINCT data) AS dias_registrados FROM clicks_diarios WHERE usuario_id = :usuario_id");
 $stmt->execute(['usuario_id' => $userId]);
 $diasRegistrados = $stmt->fetchColumn();
+
+// Buscar as tarefas do usuário
+$stmt = $pdo->prepare("SELECT text, done FROM tarefas WHERE usuario_id = :usuario_id ORDER BY id DESC");
+$stmt->execute(['usuario_id' => $userId]);
+$tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +58,9 @@ $diasRegistrados = $stmt->fetchColumn();
     <div class="main-container">
         <div class="container-fluid">
             <div class="row">
-                <!-- Sidebar -->
+        <!-- Sidebar -->
+        <div class="container-fluid">
+            <div class="row">
                 <div class="col-auto min-vh-100 sidebar px-3 d-flex flex-column">
                     <div class="pt-4 pb-2 px-4">
                         <a href="" class="text-decoration-none text-white d-flex align-items-center">
@@ -85,7 +90,8 @@ $diasRegistrados = $stmt->fetchColumn();
                         </li>
                     </ul>
                 </div>
-                <!-- Main right -->
+            </div>
+                <!-- Conteúdo Principal -->
                 <div id="dashboard" class="col main-content">
                     <div class="profile-container2">
                         <div class="profile-card2">
@@ -93,16 +99,52 @@ $diasRegistrados = $stmt->fetchColumn();
                                 <img id="profile-image2" src="<?php echo $imagemPerfil; ?>" alt="Imagem de Perfil">
                             </div>
                             <div class="profile-details">
-                                <p><strong>Nome:</strong> <span id="profile-name"><?php echo $nome; ?></span></p>
-                                <p><strong>Email:</strong> <?php echo $email; ?></p>
-                                <p><strong>Idade:</strong> <?php echo $idade; ?></p>
-                                <p><strong>Sexo:</strong> <?php echo $sexo; ?></p>
+                                <p><strong>Nome:</strong> <span id="profile-name"><?php echo isset($nome) ? $nome : 'N/A'; ?></span></p>
+                                <p><strong>Email:</strong> <?php echo isset($email) ? $email : 'N/A'; ?></p>
+                                <p><strong>Idade:</strong> <?php echo isset($idade) ? $idade : 'N/A'; ?></p>
+                                <p><strong>Sexo:</strong> <?php echo isset($sexo) ? $sexo : 'N/A'; ?></p>
                                 <p><strong>Dias Registrados:</strong> <span id="dias-registrados"><?php echo $diasRegistrados; ?></span></p>
-                                
-                                <?php if ($podeClicar): ?>
-                                    <button id="click-button" class="btn btn-primary">Registrar Sequência</button>
-                                <?php else: ?>
-                                    <p>Siga firme e forte!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="task-title">Tarefas</h2>
+                    <div class="d-flex justify-content-center">
+                        <div class="section section-concluidas">
+                            <h3 class="section-title text-center">Concluídas</h3>
+                            <div class="row">
+                                <?php 
+                                $tarefasConcluidas = array_filter($tarefas, fn($tarefa) => $tarefa['done']);
+                                if (!empty($tarefasConcluidas)): 
+                                    foreach ($tarefasConcluidas as $tarefa): ?>
+                                        <div class="col-12 col-md-6 col-lg-4">
+                                            <div class="task-card">
+                                                <h5><?php echo htmlspecialchars($tarefa['text']); ?></h5>
+                                                <p class="task-status done">Status: Concluída</p>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; 
+                                else: ?>
+                                    <p class="no-tasks">Você não tem tarefas concluídas.</p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="vertical-line"></div>
+                        <div class="section section-pendentes">
+                            <h3 class="section-title text-center">Pendentes</h3>
+                            <div class="row">
+                                <?php 
+                                $tarefasPendentes = array_filter($tarefas, fn($tarefa) => !$tarefa['done']);
+                                if (!empty($tarefasPendentes)): 
+                                    foreach ($tarefasPendentes as $tarefa): ?>
+                                        <div class="col-12 col-md-6 col-lg-4">
+                                            <div class="task-card">
+                                                <h5><?php echo htmlspecialchars($tarefa['text']); ?></h5>
+                                                <p class="task-status pending">Status: Pendente</p>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; 
+                                else: ?>
+                                    <p class="no-tasks">Você não tem tarefas pendentes.</p>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -114,34 +156,10 @@ $diasRegistrados = $stmt->fetchColumn();
     <canvas class="background"></canvas>
     <div class="cursor-dot" data-cursor-dot></div>
     <div class="cursor-outline" data-cursor-outline></div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const clickButton = document.getElementById('click-button');
-
-            if (clickButton) {
-                clickButton.addEventListener('click', () => {
-                    fetch('registrar_clique.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: new URLSearchParams({ action: 'registrar' }),
-                    })
-                    .then(response => response.json())
-                    .then(result => {
-                        if (result.success) {
-                            alert('Clique registrado com sucesso!');
-                            document.getElementById('dias-registrados').textContent = result.diasRegistrados;
-                            clickButton.style.display = 'none';
-                        } else {
-                            alert(result.error);
-                        }
-                    })
-                    .catch(error => console.error('Erro ao registrar clique:', error));
-                });
-            }
-        });
-    </script>
+    <script src="../Script/home.js"></script>
+    <script src="../Script/cursor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script>
         window.onload = function () {
             Particles.init({
@@ -149,11 +167,19 @@ $diasRegistrados = $stmt->fetchColumn();
                 color: ['#4e6c8c', '#404B69', '#DBEDF3'],
                 connectParticles: true
             });
+
+            // Ajusta a altura das seções
+            const secConcluidas = document.querySelector('.section-concluidas');
+            const secPendentes = document.querySelector('.section-pendentes');
+
+            const hasConcluidas = secConcluidas.querySelectorAll('.task-card').length > 0;
+            const hasPendentes = secPendentes.querySelectorAll('.task-card').length > 0;
+
+            secConcluidas.classList.toggle('full', hasConcluidas);
+            secConcluidas.classList.toggle('empty', !hasConcluidas);
+            secPendentes.classList.toggle('full', hasPendentes);
+            secPendentes.classList.toggle('empty', !hasPendentes);
         }
     </script>
-    <script src="../Script/home.js"></script>
-    <script src="../Script/cursor.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

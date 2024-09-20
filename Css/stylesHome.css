@@ -1,33 +1,36 @@
+/*==================================================== General Styles ====================================================*/
 html,
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #151019 !important;;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
+    margin: 0; /* Remove margens padrão */
+    background-color: #151019 !important;
     z-index: -1;
     cursor: none;
     font-family: 'Poppins', sans-serif;
 }
 
+/*==================================================== Background ====================================================*/
 .background {
-    position: absolute;
-    display: block;
+    position: fixed; /* Altera para fixed para cobrir toda a tela */
     top: 0;
     left: 0;
-    z-index: 0;
+    width: 100%;
+    height: 100%; /* Ajusta para ocupar toda a altura */
+    z-index: -1; /* Coloca o background atrás de outros elementos */
 }
 
+/*==================================================== Layout Containers ================================================*/
 .container-fluid {
     display: flex;
 }
-
-/*right container*/
 
 #dashboard {
     display: flex;
     z-index: 1;
     justify-content: center;
     align-items: center;
-
 }
 
 .container-right {
@@ -35,13 +38,17 @@ body {
     z-index: 1;
     justify-content: center;
     align-items: center;
-    
-
 }
 
-/*/////////////////////////////////////////////////////////// Cursor section //////////////////////////////////////////////////////////////// */
+.main-content {
+    margin-left: 250px;
+    display: flex;
+    flex-direction: column; /* Adiciona flex-direction para empilhar os itens */
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+}
 
-.cursor-dot{
+/*==================================================== Cursor Styles ===================================================*/
+.cursor-dot {
     width: 5px;
     height: 5px;
     background-color: rgb(240, 0, 0);
@@ -50,7 +57,6 @@ body {
 .cursor-outline {
     width: 30px;
     height: 30px;
-    border: 2px solid hsla(0, 3%, 65%, 0.5);
     border: 2px solid hsla(0, 0%, 100%, 0.5);
 }
 
@@ -64,8 +70,7 @@ body {
     pointer-events: none;
 }
 
-/*/////////////////////////////////////////////////////////// Side Bar section //////////////////////////////////////////////////////////////// */
-
+/*==================================================== Sidebar Styles ==================================================*/
 .sidebar {
     display: flex;
     background-color: rgba(255, 255, 255, 0.2);
@@ -89,23 +94,14 @@ body {
     color: #ffffff;
 }
 
-
-
-/*/////////////////////////////////////////////////////////// dashboard section //////////////////////////////////////////////////////////////// */
-
-
-/*/////////////////////////////////////////////////////////// Tarefas section //////////////////////////////////////////////////////////////// */
-
-
-
-/*/////////////////////////////////////////////////////////// Perfil section //////////////////////////////////////////////////////////////// */
+/*==================================================== Profile Section ================================================*/
 .profile-container2 {
     display: flex;
     padding: 20px;
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 100vh;
+    height: 45vh;
     width: 80vw;
 }
 
@@ -133,6 +129,100 @@ body {
     border: 2px solid #ddd;
 }
 
-#sidebar {
-    height: 100%;
+/*==================================================== Tasks Section ================================================*/
+.tasks-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajusta automaticamente */
+    grid-auto-rows: minmax(100px, auto); /* Altura mínima para os cards */
+    gap: 20px; /* Espaçamento entre os cards */
+    padding: 20px;
+    width: 80%; /* Ajuste a largura conforme necessário */
+    margin-top: 20px; /* Espaço acima do container de tarefas */
+    max-width: 800px; /* Largura máxima para evitar que cresça muito */
+}
+
+.task-card {
+    background-color: #444;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    max-height: 200px; /* Altura máxima do card */
+    overflow: hidden; /* Esconde conteúdo que transborda */
+}
+
+.task-status {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.task-status.done {
+    color: green;
+}
+
+.task-status.pending {
+    color: orange;
+}
+
+.task-status.overdue {
+    color: red;
+}
+
+.task-title {
+    text-align: center;
+    color: white;
+    font-size: 32px; /* Tamanho da fonte */
+}
+
+/*==================================================== Sections ==================================================*/
+.section {
+    width: 45%;
+    margin: 10px;
+    background-color: rgba(51, 51, 51, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto; /* Permite rolagem caso haja muitas tarefas */
+    transition: height 0.3s ease; /* Animação suave na mudança de altura */
+}
+
+.section.empty {
+    height: 200px; /* Altura reduzida quando não há tarefas */
+}
+
+
+.vertical-line {
+    width: 2px;
+    background-color: white;
+    margin: 0 10px;
+}
+
+.no-tasks {
+    text-align: center;
+    color: white;
+    font-size: 1.5em; /* Aumentando a fonte */
+    margin-top: 20px;
+}
+
+.section-title {
+    text-align: center;
+    color: #ffffff;
+}
+
+/*==================================================== Media Queries ================================================*/
+@media (max-width: 600px) {
+    .tasks-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas pequenas */
+    }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+    .tasks-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 colunas em telas médias */
+    }
+}
+
+@media (min-width: 901px) {
+    .tasks-container {
+        grid-template-columns: repeat(5, 1fr); /* 5 colunas em telas grandes */
+    }
 }
