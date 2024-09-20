@@ -1,27 +1,26 @@
-/*==================================================== General Styles ====================================================*/
 html,
 body {
     position: relative;
     overflow: hidden;
-    min-height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
-    margin: 0; /* Remove margens padrão */
+    min-height: 100vh;
+    margin: 0;
     background-color: #151019 !important;
     z-index: -1;
     cursor: none;
     font-family: 'Poppins', sans-serif;
 }
 
-/*==================================================== Background ====================================================*/
 .background {
-    position: fixed; /* Altera para fixed para cobrir toda a tela */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Ajusta para ocupar toda a altura */
-    z-index: -1; /* Coloca o background atrás de outros elementos */
+    height: 100%;
+    z-index: -1;
+    border: 2px solid #000000;
 }
 
-/*==================================================== Layout Containers ================================================*/
+
 .container-fluid {
     display: flex;
 }
@@ -43,11 +42,10 @@ body {
 .main-content {
     margin-left: 250px;
     display: flex;
-    flex-direction: column; /* Adiciona flex-direction para empilhar os itens */
-    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    flex-direction: column;
+    align-items: center;
 }
 
-/*==================================================== Cursor Styles ===================================================*/
 .cursor-dot {
     width: 5px;
     height: 5px;
@@ -70,7 +68,6 @@ body {
     pointer-events: none;
 }
 
-/*==================================================== Sidebar Styles ==================================================*/
 .sidebar {
     display: flex;
     background-color: rgba(255, 255, 255, 0.2);
@@ -94,7 +91,6 @@ body {
     color: #ffffff;
 }
 
-/*==================================================== Profile Section ================================================*/
 .profile-container2 {
     display: flex;
     padding: 20px;
@@ -129,16 +125,15 @@ body {
     border: 2px solid #ddd;
 }
 
-/*==================================================== Tasks Section ================================================*/
 .tasks-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajusta automaticamente */
-    grid-auto-rows: minmax(100px, auto); /* Altura mínima para os cards */
-    gap: 20px; /* Espaçamento entre os cards */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: minmax(100px, auto);
+    gap: 20px;
     padding: 20px;
-    width: 80%; /* Ajuste a largura conforme necessário */
-    margin-top: 20px; /* Espaço acima do container de tarefas */
-    max-width: 800px; /* Largura máxima para evitar que cresça muito */
+    width: 80%;
+    margin-top: 20px;
+    max-width: 800px;
 }
 
 .task-card {
@@ -147,8 +142,8 @@ body {
     padding: 15px;
     border-radius: 5px;
     color: white;
-    max-height: 200px; /* Altura máxima do card */
-    overflow: hidden; /* Esconde conteúdo que transborda */
+    max-height: 200px;
+    overflow: hidden;
 }
 
 .task-status {
@@ -171,24 +166,23 @@ body {
 .task-title {
     text-align: center;
     color: white;
-    font-size: 32px; /* Tamanho da fonte */
+    font-size: 32px;
 }
 
-/*==================================================== Sections ==================================================*/
 .section {
     width: 45%;
     margin: 10px;
     background-color: rgba(51, 51, 51, 0.8);
     padding: 20px;
     border-radius: 8px;
-    overflow-y: auto; /* Permite rolagem caso haja muitas tarefas */
-    transition: height 0.3s ease; /* Animação suave na mudança de altura */
+    overflow-y: auto;
+    transition: height 0.3s ease;
+    max-height: 45vh;
 }
 
 .section.empty {
-    height: 200px; /* Altura reduzida quando não há tarefas */
+    height: 200px;
 }
-
 
 .vertical-line {
     width: 2px;
@@ -199,7 +193,7 @@ body {
 .no-tasks {
     text-align: center;
     color: white;
-    font-size: 1.5em; /* Aumentando a fonte */
+    font-size: 1.5em;
     margin-top: 20px;
 }
 
@@ -208,21 +202,43 @@ body {
     color: #ffffff;
 }
 
-/*==================================================== Media Queries ================================================*/
 @media (max-width: 600px) {
     .tasks-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas pequenas */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
     .tasks-container {
-        grid-template-columns: repeat(3, 1fr); /* 3 colunas em telas médias */
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (min-width: 901px) {
     .tasks-container {
-        grid-template-columns: repeat(5, 1fr); /* 5 colunas em telas grandes */
+        grid-template-columns: repeat(5, 1fr);
     }
+}
+
+.section::-webkit-scrollbar {
+    width: 12px;
+}
+
+.section::-webkit-scrollbar-track {
+    background: rgba(51, 51, 51, 0.5);
+    border-radius: 10px;
+}
+
+.section::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.section::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.section {
+    scrollbar-width: thin;
+    scrollbar-color: #888 rgba(51, 51, 51, 0.5);
 }

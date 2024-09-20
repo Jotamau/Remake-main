@@ -3,7 +3,7 @@ session_start(); // Certifique-se de que a sessão está iniciada
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Configuração da conexão com o banco de dados
-    $servername = "localhost";
+    $servername = "localhost:3306";
     $username = "root";
     $password = "";
     $dbname = "taskify";

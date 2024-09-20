@@ -11,6 +11,10 @@
     text-emphasis-color: black;
 }
 
+.profile-container2 {
+    margin-top: 1rem;
+}
+
 .profile-container {
     display: flex;
     justify-content: center;
@@ -74,11 +78,14 @@
     border: none;
     outline: none;
     margin-top: 0.5rem;
+    background-color: #23232e;
+    padding: 20px;
 }
 
 
 .profile-header button:hover {
     background-color: #280449;
+    transition: 1s;
 }
 
 /* Novo CSS para <h2> */

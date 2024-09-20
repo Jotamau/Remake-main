@@ -58,9 +58,7 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="main-container">
         <div class="container-fluid">
             <div class="row">
-        <!-- Sidebar -->
-        <div class="container-fluid">
-            <div class="row">
+                <!-- Sidebar -->
                 <div class="col-auto min-vh-100 sidebar px-3 d-flex flex-column">
                     <div class="pt-4 pb-2 px-4">
                         <a href="" class="text-decoration-none text-white d-flex align-items-center">
@@ -90,7 +88,6 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </li>
                     </ul>
                 </div>
-            </div>
                 <!-- Conteúdo Principal -->
                 <div id="dashboard" class="col main-content">
                     <div class="profile-container2">
@@ -104,6 +101,11 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <p><strong>Idade:</strong> <?php echo isset($idade) ? $idade : 'N/A'; ?></p>
                                 <p><strong>Sexo:</strong> <?php echo isset($sexo) ? $sexo : 'N/A'; ?></p>
                                 <p><strong>Dias Registrados:</strong> <span id="dias-registrados"><?php echo $diasRegistrados; ?></span></p>
+                                <?php if ($podeClicar): ?>
+                                    <button id="click-button" class="btn btn-primary">Registrar Sequência</button>
+                                <?php else: ?>
+                                    <p>Siga firme e forte!</p>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -161,14 +163,34 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script>
-        window.onload = function () {
-            Particles.init({
-                selector: '.background',
-                color: ['#4e6c8c', '#404B69', '#DBEDF3'],
-                connectParticles: true
-            });
+        document.addEventListener('DOMContentLoaded', () => {
+            const clickButton = document.getElementById('click-button');
 
-            // Ajusta a altura das seções
+            if (clickButton) {
+                clickButton.addEventListener('click', () => {
+                    fetch('registrar_clique.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({ action: 'registrar' }),
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            alert('Clique registrado com sucesso!');
+                            document.getElementById('dias-registrados').textContent = result.diasRegistrados;
+                            clickButton.style.display = 'none';
+                        } else {
+                            alert(result.error);
+                        }
+                    })
+                    .catch(error => console.error('Erro ao registrar clique:', error));
+                });
+            }
+        });
+
+                    // Ajusta a altura das seções
             const secConcluidas = document.querySelector('.section-concluidas');
             const secPendentes = document.querySelector('.section-pendentes');
 
@@ -179,6 +201,14 @@ $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
             secConcluidas.classList.toggle('empty', !hasConcluidas);
             secPendentes.classList.toggle('full', hasPendentes);
             secPendentes.classList.toggle('empty', !hasPendentes);
+        
+
+        window.onload = function () {
+            Particles.init({
+                selector: '.background',
+                color: ['#4e6c8c', '#404B69', '#DBEDF3'],
+                connectParticles: true
+            });
         }
     </script>
 </body>
