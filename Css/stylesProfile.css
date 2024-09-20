@@ -23,6 +23,10 @@
     width: 80vw;
 }
 
+.profile-container2 {
+    margin-top: 1rem;
+}
+
 .profile-card {
     box-sizing: border-box;
     background-color: #ffffff;
@@ -47,7 +51,7 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ddd;
+    border: 2px solid #000000;
 }
 
 .btn-pro {
@@ -72,8 +76,10 @@
 }
 
 .btn-justify > button {
+    background-color: #23232e;
     width: 10vw;
     margin-top: 50%;
+    padding: 20px;
     border-radius: 15px;
     border: none;
     outline: none;
@@ -84,6 +90,7 @@
 
 
 .profile-header button:hover {
+    transition: 1s;
     background-color: #280449;
     transition: 1s;
 }
