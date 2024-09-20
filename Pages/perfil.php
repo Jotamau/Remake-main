@@ -41,7 +41,7 @@ $imagemPerfil = $usuario['imagem_perfil'] ? htmlspecialchars($usuario['imagem_pe
                 <!-- Sidebar -->
                 <div class="col-auto min-vh-100 sidebar px-3 d-flex flex-column" id="sidebar">
                     <div class="pt-4 pb-2 px-4">
-                        <a href="" class="text-decoration-none text-white d-flex align-items-center">
+                        <a href="../index.php" class="text-decoration-none text-white d-flex align-items-center">
                             <img src="../Assets/logo.svg" alt="" style="width: 50px; height: 50px;">
                             <span class="fs-3 d-none d-sm-inline ms-2">Taskify</span>
                         </a>

@@ -33,7 +33,7 @@ if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true) 
         <div class="container">
             <h1>Taskify</h1>
             <p class="lead">O Futuro do Gerenciamento de Tarefas</p>
-            <a href="#features" class="btn btn-primary btn-glow">Acesse-já  </a>
+            <a href="Pages/sobre.php" class="btn btn-primary btn-glow">Saiba Mais  </a>
         </div>
     </header>
 
